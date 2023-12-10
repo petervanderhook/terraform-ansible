@@ -73,14 +73,3 @@ module "db" {
   security_group_ids = [module.sg.sg_db_id]
   depends_on = [module.sg]
 }
-
-
-terraform {
-  backend "s3" {
-    bucket         = "pv-4630-ass3-bucket"
-    key            = "global/s3/terraform.tfstate"
-    region         = "us-west-1"
-    dynamodb_table = "pv-4630-ass3-locks"
-    encrypt        = true
-  }
-}

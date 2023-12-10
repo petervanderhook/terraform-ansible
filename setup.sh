@@ -1,7 +1,7 @@
 #terraform destroy
 #terraform apply
 
-cat <<EOF > ./roles/backend/templates/backend.conf
+cat <<EOF > ./main/roles/backend/templates/backend.conf
 [database]
 MYSQL_HOST = $(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory --graph aws_rds | grep terraform | cut -c 6-).endpoint.address)
 MYSQL_PORT = 3306
@@ -11,7 +11,7 @@ MYSQL_PASS = securepassword
 EOF
 
 
-cat <<EOF > ./roles/backend/defaults/main.yml
+cat <<EOF > ./main/roles/backend/defaults/main.yml
 ---
 repository: https://github.com/timoguic/acit4640-py-mysql.git
 app_user: backend

@@ -1,0 +1,142 @@
+---
+- name: install packages
+  ansible.builtin.package:
+    update_cache: true
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - git
+    - zip
+    - unzip
+    - python3-full
+    - git
+    - mysql-client
+    - libmysqlclient-dev
+    - pkg-config
+    - python3-mysqldb
+    - python3-pip
+    - default-libmysqlclient-dev
+
+- name: rm git repo if exists
+  ansible.builtin.shell:
+    rm -rf /home/backend/app
+
+- name: Setup user on backend
+  user:
+    name: "{{ app_user}}"
+
+
+- name: Clone git repository backend
+  git:
+    repo: https://github.com/timoguic/acit4640-py-mysql.git
+    dest: /home/backend/app
+
+
+- name: Install requirements
+  ansible.builtin.pip: 
+    requirements: /home/backend/app/backend/requirements.txt
+    virtualenv: /home/backend/venv
+    virtualenv_command: python3 -m venv
+  become: yes
+- name: Remove backend.conf
+  ansible.builtin.shell: |
+    rm -f /home/backend/app/backend/backend.conf
+- name: Replace backend.conf
+  template:
+    src: ./templates/backend.conf
+    dest: /home/backend/app/backend/backend.conf
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+- name: Setup system service file
+  template:
+    src: ./templates/app.service
+    dest: /usr/lib/systemd/system/app.service
+    owner: root
+    group: root
+    mode: '0644'
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+- name: Change ownership to backend user.
+  ansible.builtin.shell: |
+    chown -R backend /home/backend/
+- name: Set up database on db host
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  community.mysql.mysql_user:
+    host: "{{ app_host }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+
+- name: Removes anonymous user account for localhost
+  community.mysql.mysql_user:
+    name: ''
+    host: "{{ app_host }}"
+    state: absent
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+
+- name: Delete test database
+  community.mysql.mysql_db:
+    name: test
+    state: absent
+    host: "{{ app_host }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+
+- name: Create new database with name 'app'
+  community.mysql.mysql_db:
+    name: app
+    state: present
+    host: "{{ app_host }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+
+- name: Create application user
+  community.mysql.mysql_user:
+    name: "{{ app_user }}"
+    password: "{{ app_pass }}"
+    host: "{{ app_host }}"
+    priv: "app.*:ALL"
+    state: present
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+- name: Insert data into item table
+  community.mysql.mysql_query:
+    login_db: app
+    host: "{{ app_host }}"
+    query:
+    - CREATE TABLE IF NOT EXISTS item (name varchar(30) NOT NULL, bcit_id varchar(10) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    - DELETE FROM app.item WHERE name = "peter vanderhook";
+    - INSERT INTO app.item (name, bcit_id) VALUES ('peter vanderhook', 'A00984094');
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+
+
+
+- name: rm default mysqld.cnf file
+  ansible.builtin.shell: |
+    sudo rm -f /etc/mysql/mysql.conf.d/mysqld.cnf
+- name: Setup mysqld conf file
+  template:
+    src: ./templates/mysqld.cnf
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    owner: mysql
+    group: mysql
+    mode: '0644'
+- name: Restart mysql service
+  ansible.builtin.shell: |
+    sudo systemctl restart mysql
+
+
+
+
+
+- name: Restart and enable app service
+  service:
+    name: app
+    state: restarted
+    enabled: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+

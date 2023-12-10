@@ -1,0 +1,16 @@
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /home/ubuntu/app/frontend;
+
+        server_name _;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+        location /json {
+                proxy_pass http://ec2-54-193-165-196.us-west-1.compute.amazonaws.com:5000;
+        }
+}

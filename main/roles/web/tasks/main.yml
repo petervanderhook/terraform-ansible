@@ -1,0 +1,42 @@
+---
+- name: Install tools and setup nginx
+  ansible.builtin.package:
+    update_cache: true
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - git
+    - nginx
+    - zip
+    - unzip
+    - net-tools
+    - nmap
+
+- name: Clone on frontend 
+  git:
+    repo: "{{ repository }}"
+    dest: /home/ubuntu/app
+
+- name: Configure Nginx on frontend
+  ansible.builtin.shell: |
+    sudo rm /etc/nginx/sites-enabled/default
+    chown -R www-data /home/ubuntu/app/frontend
+    sudo chmod 755 /home
+    sudo chmod 755 /home/ubuntu
+    sudo chmod 755 /home/ubuntu/app
+    sudo -R chmod 755 /home/ubuntu/app/frontend
+    sudo chown www-data:www-data /home/ubuntu/app/frontend
+    sudo chown www-data:www-data /home/ubuntu/app/frontend/index.html
+
+- name: Setup nginx conf file
+  template:
+    src: ./templates/default
+    dest: "{{ nginx_conf_path }}"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+- name: Restart and enable nginx service
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

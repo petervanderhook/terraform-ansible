@@ -1,0 +1,5 @@
+main/*.pem
+.terrafor*
+main/.terrafor*
+terraform.tfstat*
+main/*.tfstate*

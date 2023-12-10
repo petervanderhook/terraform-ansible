@@ -1,0 +1,12 @@
+---
+- name: Roles for the frontend server
+  hosts: web
+  become: true
+  roles:
+    - web
+
+- name: Roles for the backend server
+  hosts: backend
+  become: true
+  roles:
+    - backend 

@@ -54,12 +54,12 @@ terraform {
         bucket         = "${var.bucket_name}"
         key            = "global/s3/terraform.tfstate"
         dynamodb_table = "${var.dynamodb_name}"
-        region         =  "${var.region} 
+        region         = "${var.region}"
         encrypt        = true
     }
 }
 EOF
 
-  filename = "../main/backend_config.tf"
+  filename = "./main/backend_config.tf"
 
 }

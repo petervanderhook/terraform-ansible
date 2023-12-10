@@ -65,6 +65,7 @@
     ansible_python_interpreter: /usr/bin/python3
   community.mysql.mysql_user:
     host: "{{ app_host }}"
+    user: "{{ app_user }}"
     login_user: "{{ db_user }}"
     login_password: "{{ db_pass }}"
 

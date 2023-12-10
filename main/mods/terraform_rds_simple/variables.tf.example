@@ -12,10 +12,10 @@ variable "skip_final_snapshot" {
     default = true
 }
 variable "db_user" {
-    default = "root"
+    default = "example_user"
 }
 variable "db_pass" {
-    default = "password"
+    default = "example_password"
 }
 variable "allocated_storage" {
     default = 5

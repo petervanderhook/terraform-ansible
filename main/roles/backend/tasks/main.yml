@@ -67,6 +67,10 @@
     host: "{{ app_host }}"
     login_user: "{{ db_user }}"
     login_password: "{{ db_pass }}"
+    user: "{{ app_user }}"
+    password: "{{ app_pass }}"
+    priv: '*.*:ALL'
+    state: present
 
 - name: Removes anonymous user account for localhost
   community.mysql.mysql_user:

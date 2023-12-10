@@ -1,5 +1,5 @@
-terraform init
-terraform apply
+#terraform init
+#terraform apply
 
 cat <<EOF > ./roles/backend/templates/backend.conf
 [database]

@@ -129,9 +129,11 @@
     login_host: "{{ app_host }}"
     login_db: app
     query:
-    - CREATE TABLE IF NOT EXISTS item (name varchar(30) NOT NULL, bcit_id varchar(10) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;;
+    - CREATE TABLE IF NOT EXISTS item (name varchar(255) NOT NULL, bcit_id varchar(255) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;;
     - DELETE FROM app.item WHERE name = "peter vanderhook";
+    - INSERT INTO app.item (name, bcit_id) VALUES ', '');
     - INSERT INTO app.item (name, bcit_id) VALUES ('peter vanderhook', 'A00984094');
+
 
 - name: Restart and enable app service
   service:

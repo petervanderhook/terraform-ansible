@@ -7,7 +7,7 @@ MYSQL_HOST = $(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory
 MYSQL_PORT = 3306
 MYSQL_DB = app
 MYSQL_USER = backend
-MYSQL_PASS = securepassword
+MYSQL_PASSWORD = securepassword
 EOF
 cat ./roles/backend/templates/backend.conf
 
@@ -53,5 +53,7 @@ server {
 EOF
 
 cat ./roles/web/templates/default
+
+bash list.sh
 
 #ansible-playbook site.yml

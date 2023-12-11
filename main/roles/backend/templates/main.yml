@@ -1,0 +1,8 @@
+---
+repository: https://github.com/timoguic/acit4640-py-mysql.git
+db_host: null
+db_user: root
+db_pass: password
+app_user: backend
+app_pass: securepassword
+app_host: 

@@ -3,12 +3,3 @@ main/*.pem
 main/.terrafor*
 terraform.tfstat*
 main/*.tfstate*
-main/AWS-assignment1.pem
-main/roles
-main\mods\terraform_rds_simple\variables.tf
-main\roles\backend\defaults\main.yml
-main\roles\backend\templates\backend.conf
-main\roles\web\defaults\main.yml
-main\roles\backend\templates\.my.cnf
-main\backend_config.tf
-main\setup.sh

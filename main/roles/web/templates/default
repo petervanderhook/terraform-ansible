@@ -11,6 +11,6 @@ server {
         }
 
         location /json {
-                proxy_pass http://ec2-13-57-48-237.us-west-1.compute.amazonaws.com:5000;
+                proxy_pass http://null:5000;
         }
 }

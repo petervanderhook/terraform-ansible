@@ -9,7 +9,6 @@
     - zip
     - unzip
     - python3-full
-    - git
     - mysql-client
     - libmysqlclient-dev
     - pkg-config
@@ -47,7 +46,7 @@
     dest: /home/backend/app/backend/backend.conf
     owner: backend
     group: backend
-    mode: '0644'
+    mode: '0777'
 
 - name: Remove .my.cnfs
   become: yes
@@ -85,47 +84,54 @@
   template:
     src: ./templates/app.service
     dest: /usr/lib/systemd/system/app.service
-    owner: root
-    group: root
-    mode: '0644'
+    owner: backend
+    group: backend
+    mode: '0777'
   vars:
     ansible_python_interpreter: /usr/bin/python3
 - name: Change ownership to backend user.
   ansible.builtin.shell: |
-    chown -R backend /home/backend/
+    chown -R backend:backend /home/backend/
+    chmod -R 777 /home/backend
 
-
-
-- name: Removes anonymous user account for localhost
-  community.mysql.mysql_user:
-    name: ''
-    state: absent
-
-- name: Delete test database
-  community.mysql.mysql_db:
-    name: test
-    state: absent
+- name: Test echo
+  ansible.builtin.debug:
+    msg: "Db: user{{ db_user }}"
+    msg: "Db pass: {{ db_pass }}"
+    msg: "App user: {{ app_user }}"
+    msg: "App pass: {{ app_pass }}"
+    msg: "Host: {{ app_host }}"
+    msg: "Logging into db with {{db_user}}:{{db_pass}}@{{app_host}}"
 
 - name: Create new database with name 'app'
   community.mysql.mysql_db:
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+    login_host: "{{ app_host }}"
     name: app
     state: present
+
 - name: Create application user
   community.mysql.mysql_user:
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+    login_host: "{{ app_host }}"
+    host: '%'
     name: "{{ app_user }}"
     password: "{{ app_pass }}"
-    priv: "app.*:ALL"
+    priv: "app.*:ALL,GRANT"
     state: present
   
 - name: Insert data into item table
   community.mysql.mysql_query:
+    login_user: "{{ app_user }}"
+    login_password: "{{ app_pass }}"
+    login_host: "{{ app_host }}"
     login_db: app
     query:
-    - CREATE TABLE IF NOT EXISTS item (name varchar(30) NOT NULL, bcit_id varchar(10) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    - CREATE TABLE IF NOT EXISTS item (name varchar(30) NOT NULL, bcit_id varchar(10) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;;
     - DELETE FROM app.item WHERE name = "peter vanderhook";
     - INSERT INTO app.item (name, bcit_id) VALUES ('peter vanderhook', 'A00984094');
-
-
 
 - name: Restart and enable app service
   service:

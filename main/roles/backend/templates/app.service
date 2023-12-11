@@ -10,6 +10,5 @@ Environment="PATH=/home/backend/venv"
 ExecStart=/home/backend/venv/bin/gunicorn wsgi:app -b 0.0.0.0:5000
 Restart=always
 
-
 [Install]
 WantedBy=multi-user.target

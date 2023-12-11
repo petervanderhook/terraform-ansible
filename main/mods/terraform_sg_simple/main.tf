@@ -83,7 +83,7 @@ resource "aws_security_group" "sg_be" {
       from_port = 0
       to_port = 0
       cidr_blocks = [var.vpc_cidr]
-    }
+  }
   egress  {
       description = "allow all egress traffic to vpc"
       protocol = "-1"

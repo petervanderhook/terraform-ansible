@@ -1,8 +1,9 @@
 terraform init
 terraform apply -auto-approve
+source list.sh
 cat <<EOF > ./roles/backend/templates/backend.conf
 [database]
-MYSQL_HOST = $(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory --graph aws_rds | grep terraform | cut -c 6-).endpoint.address)
+MYSQL_HOST = $HOST
 MYSQL_PORT = 3306
 MYSQL_DB = app
 MYSQL_USER = backend
@@ -10,27 +11,26 @@ MYSQL_PASSWORD = securepassword
 EOF
 cat ./roles/backend/templates/backend.conf
 
-cat <<EOF > ./roles/backend/templates/main.yml
+cat <<EOF > ./roles/backend/defaults/main.yml
 ---
 repository: https://github.com/timoguic/acit4640-py-mysql.git
-db_host: $(ansible-inventory --list  | yq .backend.hosts[0])
 db_user: root
 db_pass: password
 app_user: backend
 app_pass: securepassword
-app_host: $(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory --graph aws_rds | grep terraform | cut -c 6-).endpoint.address)
+app_host: $HOST
 EOF
 cat ./roles/backend/defaults/main.yml
 
-cat <<EOF > ./roles/backend/templates/.my.cnf
+cat <<EOF > ./roles/backend/templates/my.cnf
 [client]
-user="root"
-port=3306
-host=$(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory --graph aws_rds | grep terraform | cut -c 6-).endpoint.address)
-password="password"
+user = "root"
+port = 3306
+host = "$HOST"
+password = "password"
 EOF
 
-cat ./roles/backend/defaults/.my.cnf
+cat ./roles/backend/defaults/my.cnf
 
 cat <<EOF > ./roles/web/templates/default
 server {
@@ -46,17 +46,18 @@ server {
         }
 
         location /json {
-                proxy_pass http://$(ansible-inventory --list  | yq .backend.hosts[0]):5000;
+                proxy_pass http://$BACKEND:5000;
         }
 }
 EOF
 
 cat ./roles/web/templates/default
 
-bash list.sh
 
 ansible-playbook site.yml
 
 
-echo "Connect to your instance with the following address:"
-echo "$(ansible-inventory --list  | yq .backend.hosts[0])"
+echo "Connect to your instance in the browser with the WEB address"
+echo "WEB: $WEB"
+echo "BACKEND: $BACKEND"
+echo "RDS: $HOST"

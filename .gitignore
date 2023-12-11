@@ -3,3 +3,6 @@ main/*.pem
 main/.terrafor*
 terraform.tfstat*
 main/*.tfstate*
+main/backend_config.tf
+main/AWS-assignment1.pem
+assignment3-peterv-4630.zip

@@ -1,8 +1,7 @@
 ---
 repository: https://github.com/timoguic/acit4640-py-mysql.git
-db_host: ec2-13-57-48-237.us-west-1.compute.amazonaws.com
 db_user: root
 db_pass: password
 app_user: backend
 app_pass: securepassword
-app_host: terraform-20231211022345589800000005.cbimu9mjowgg.us-west-1.rds.amazonaws.com
+app_host: terraform-20231211080022387300000005.cbimu9mjowgg.us-west-1.rds.amazonaws.com

@@ -89,6 +89,7 @@
     mode: '0777'
   vars:
     ansible_python_interpreter: /usr/bin/python3
+  
 - name: Change ownership to backend user.
   ansible.builtin.shell: |
     chown -R backend:backend /home/backend/
@@ -131,7 +132,6 @@
     query:
     - CREATE TABLE IF NOT EXISTS item (name varchar(255) NOT NULL, bcit_id varchar(255) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;;
     - DELETE FROM app.item WHERE name = "peter vanderhook";
-    - INSERT INTO app.item (name, bcit_id) VALUES ', '');
     - INSERT INTO app.item (name, bcit_id) VALUES ('peter vanderhook', 'A00984094');
 
 

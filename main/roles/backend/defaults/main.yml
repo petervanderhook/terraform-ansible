@@ -1,6 +1,6 @@
 ---
 repository: https://github.com/timoguic/acit4640-py-mysql.git
-app_user: backend
+db_host: ec2-3-101-34-110.us-west-1.compute.amazonaws.com
 db_user: root
 db_pass: password
 app_user: backend

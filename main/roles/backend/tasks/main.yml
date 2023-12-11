@@ -45,9 +45,42 @@
   template:
     src: ./templates/backend.conf
     dest: /home/backend/app/backend/backend.conf
+    owner: backend
+    group: backend
+    mode: '0644'
+
+- name: Remove .my.cnfs
+  become: yes
+  ansible.builtin.shell: |
+    rm -f /root/.my.cnf
+    rm -f /home/backend/.my.cnf
+    rm -f /home/ubuntu/.my.cnf
+- name: Replace .my.cnf 1
+  become: yes
+  template:
+    src: my.cnf
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: '0644'
+- name: Replace .my.cnf 2
+  become: yes
+  template:
+    src: my.cnf
+    dest: /home/ubuntu/.my.cnf
     owner: ubuntu
     group: ubuntu
     mode: '0644'
+- name: Replace .my.cnf 2
+  become: yes
+  template:
+    src: my.cnf
+    dest: /home/backend/.my.cnf
+    owner: backend
+    group: backend
+    mode: '0644'
+
+
 - name: Setup system service file
   template:
     src: ./templates/app.service
@@ -60,79 +93,37 @@
 - name: Change ownership to backend user.
   ansible.builtin.shell: |
     chown -R backend /home/backend/
-- name: Set up database on db host
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-  community.mysql.mysql_user:
-    host: "{{ app_host }}"
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
-    user: "{{ app_user }}"
-    password: "{{ app_pass }}"
-    priv: '*.*:ALL'
-    state: present
+
+
 
 - name: Removes anonymous user account for localhost
   community.mysql.mysql_user:
     name: ''
-    host: "{{ app_host }}"
     state: absent
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
 
 - name: Delete test database
   community.mysql.mysql_db:
     name: test
     state: absent
-    host: "{{ app_host }}"
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
 
 - name: Create new database with name 'app'
   community.mysql.mysql_db:
     name: app
     state: present
-    host: "{{ app_host }}"
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
-
 - name: Create application user
   community.mysql.mysql_user:
     name: "{{ app_user }}"
     password: "{{ app_pass }}"
-    host: "{{ app_host }}"
     priv: "app.*:ALL"
     state: present
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
+  
 - name: Insert data into item table
   community.mysql.mysql_query:
     login_db: app
-    host: "{{ app_host }}"
     query:
     - CREATE TABLE IF NOT EXISTS item (name varchar(30) NOT NULL, bcit_id varchar(10) NOT NULL, PRIMARY KEY (bcit_id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     - DELETE FROM app.item WHERE name = "peter vanderhook";
     - INSERT INTO app.item (name, bcit_id) VALUES ('peter vanderhook', 'A00984094');
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
-
-
-
-- name: rm default mysqld.cnf file
-  ansible.builtin.shell: |
-    sudo rm -f /etc/mysql/mysql.conf.d/mysqld.cnf
-- name: Setup mysqld conf file
-  template:
-    src: ./templates/mysqld.cnf
-    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-    owner: mysql
-    group: mysql
-    mode: '0644'
-- name: Restart mysql service
-  ansible.builtin.shell: |
-    sudo systemctl restart mysql
-
-
 
 
 

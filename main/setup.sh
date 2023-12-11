@@ -56,3 +56,7 @@ cat ./roles/web/templates/default
 bash list.sh
 
 ansible-playbook site.yml
+
+
+echo "Connect to your instance with the following address:"
+echo "$(ansible-inventory --list  | yq .backend.hosts[0])"

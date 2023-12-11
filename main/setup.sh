@@ -1,6 +1,5 @@
-#terraform init
-#terraform apply
-
+terraform init
+terraform apply
 cat <<EOF > ./roles/backend/templates/backend.conf
 [database]
 MYSQL_HOST = $(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory --graph aws_rds | grep terraform | cut -c 6-).endpoint.address)
@@ -56,4 +55,4 @@ cat ./roles/web/templates/default
 
 bash list.sh
 
-#ansible-playbook site.yml
+ansible-playbook site.yml

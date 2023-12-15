@@ -36,7 +36,7 @@ EOF
 resource "local_file" "backend_mycnf" {
     content = <<EOF
 [client]
-user = ${db_user}
+user = ${var.db_user}
 port = ${var.db_pass}
 host = ${module.db.db_address}
 password = ${var.db_pass}
@@ -68,4 +68,5 @@ EOF
 
   filename = "./roles/web/templates/default"
 }
+
 

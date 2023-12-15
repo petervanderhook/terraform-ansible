@@ -19,40 +19,6 @@ db_pass: password
 app_user: backend
 app_pass: securepassword
 app_host: $HOST
-EOF
-cat ./roles/backend/defaults/main.yml
-
-cat <<EOF > ./roles/backend/templates/my.cnf
-[client]
-user = "root"
-port = 3306
-host = "$HOST"
-password = "password"
-EOF
-
-cat ./roles/backend/defaults/my.cnf
-
-cat <<EOF > ./roles/web/templates/default
-server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        root /home/ubuntu/app/frontend;
-
-        server_name _;
-
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-
-        location /json {
-                proxy_pass http://$BACKEND:5000;
-        }
-}
-EOF
-
-cat ./roles/web/templates/default
-
 
 ansible-playbook site.yml
 

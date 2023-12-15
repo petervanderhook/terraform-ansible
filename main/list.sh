@@ -2,3 +2,6 @@ HOST="$(ansible-inventory --list | yq ._meta.hostvars.$(ansible-inventory --grap
 BACKEND="$(ansible-inventory --list  | yq .backend.hosts[0])"
 WEB="$(ansible-inventory --list  | yq .web.hosts[0])"
 
+echo "RDS: $HOST"
+echo "BACKEND: $BACKEND"
+echo "WEB: $WEB"

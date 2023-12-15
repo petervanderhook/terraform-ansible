@@ -1,0 +1,15 @@
+---
+- name: install packages
+  ansible.builtin.package:
+    update_cache: true
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - zip
+    - unzip
+    - net-tools
+    - nmap
+    - curl
+    - wget
+    - dos2unix
+    - tree

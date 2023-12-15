@@ -6,6 +6,8 @@ rm -rf main/.terraform
 rm -rf main/.terraform.lock.hcl
 rm -rf terraform.tfstate
 rm -rf terraform.tfstate.backup
+rm -rf *.tfstate*
+rm -rf main/*.tfstate*
 rm -rf main/backend_config.tf
 rm -rf main/roles/backend/templates/backend.conf
 rm -rf main/roles/web/templates/default

@@ -7,10 +7,6 @@
   with_items:
     - git
     - nginx
-    - zip
-    - unzip
-    - net-tools
-    - nmap
 
 - name: rm repository if exitst
   become: true

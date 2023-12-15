@@ -70,3 +70,26 @@ EOF
 }
 
 
+resource "local_file" "ansible_yml" {
+    content = <<EOF
+---
+- name: Install Common Debug tools for all ec2 instances
+  hosts: ${module.ec2_be.project_name}
+  become: true
+  roles:
+    - debug
+
+- name: Roles for the frontend server
+  hosts: web
+  become: true
+  roles:
+    - web
+
+- name: Roles for the backend server
+  hosts: backend
+  become: true
+  roles:
+    - backend
+EOF
+    filename = "./site.yml"
+}

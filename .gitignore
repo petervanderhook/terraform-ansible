@@ -15,3 +15,4 @@ main/roles/backend/templates/my.cnf
 main/roles/web/defaults/main.yml
 main/roles/backend/defaults/main.yml
 variables.tf
+main/mods/terraform/variables.tf

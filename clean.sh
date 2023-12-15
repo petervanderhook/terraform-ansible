@@ -13,3 +13,4 @@ rm -rf main/roles/backend/templates/my.cnf
 rm -rf main/roles/web/defaults/main.yml
 rm -rf main/roles/backend/defaults/main.yml
 echo "FILES REMOVED"
+sleep 3

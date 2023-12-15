@@ -57,11 +57,11 @@ server {
         server_name _;
 
         location / {
-                try_files \$uri \$uri/ =404;
+                try_files $uri $uri/ =404;
         }
 
         location /json {
-                proxy_pass http://${module.ec2_web.ec2_instance_public_dns}:5000;
+                proxy_pass http://${module.ec2_be.ec2_instance_public_dns}:5000;
         }
 }
 EOF

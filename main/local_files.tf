@@ -74,7 +74,7 @@ resource "local_file" "ansible_yml" {
     content = <<EOF
 ---
 - name: Install Common Debug tools for all ec2 instances
-  hosts: ${module.ec2_be.project_name}
+  hosts: ${var.project_name}
   become: true
   roles:
     - debug

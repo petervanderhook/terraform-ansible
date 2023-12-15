@@ -11,12 +11,12 @@ sleep 3
 
 echo "INITIALIZING TERRAFORM IN /MAIN"
 sleep 1
-#terraform -chdir=main init
+terraform -chdir=main init
 sleep 1
 
 echo "APPLYING TERRAFORM FILES in /MAIN"
 sleep 1
-#terraform -chdir=main apply -auto-approve
+terraform -chdir=main apply -auto-approve
 sleep 1
 echo "FINISHED APPLYING TERRAFORM FILES IN /MAIN"
 sleep 3

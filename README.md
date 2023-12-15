@@ -13,10 +13,12 @@ Ensure all your variables in the following files are configured properly as per 
 \main\mods\terraform_vpc_simple\variables.tf (change from 0.0.0.0)
 
 # Run Instructions
+Ensure the following tools are installed
+*terraform*
+*ansible-inventory*
+*ansible-playbook*
 **In Root Project Directiory**   
 **RUN SCRIPT:** *setup.sh*   
-**CHANGE DIRECTORY:** *cd main*   
-**RUN SCRIPT:** *setup.sh*  
 
 **CONNECT TO YOUR NEW SERVER AT THE ADDRESS PROVIDED**
 

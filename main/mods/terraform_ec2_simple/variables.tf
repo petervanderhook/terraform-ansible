@@ -24,7 +24,7 @@ variable "security_group_id" {
 
 variable "ssh_key_name" {
   description = "AWS SSH key name"
-  default     = "AWS-keyname"
+  default     = "AWS-assignment1"
 }
 
 provider "aws" {

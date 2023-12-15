@@ -63,4 +63,6 @@ output "web_ec2_id" {
 output "db_id" {
   value = module.db.id
 }
-
+output "db_address" {
+  value = module.db.db_address
+}

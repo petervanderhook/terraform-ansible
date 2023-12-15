@@ -36,16 +36,16 @@ variable "default_route"{
 
 variable "home1_net" {
   description = "Home network"
-  default     = "174.6.81.63/32"
+  default     = "1.2.3.4/32"
 }
 variable "home2_net" {
   description = "Home network"
-  default     = "1.2.3.4/32"
+  default     = "1.2.3.5/32"
 }
 
 variable "bcit_net" {
-  description = "BCIT network"
-  default     = "142.232.0.0/16"
+  description = "Larger network (Like a school"
+  default     = "1.2.0.0/16"
   
 }
 
@@ -62,19 +62,16 @@ variable "app_user" {
   default = "backend"
 }
 variable "app_pass" {
-  default = "securepassword"
+  default = "example_app_pass"
 }
 
 variable "db_user" {
   default = "root"
 }
 variable "db_pass" {
-  default = "password"
+  default = "example_db_pass"
 }
 
 variable "repository" {
   default = "https://github.com/timoguic/acit4640-py-mysql.git"
 }
-# export HOST="$(ansible-inventory --playbook-dir "./main" --list | yq ._meta.hostvars.$(ansible-inventory --graph aws_rds | grep terraform | cut -c 6-).endpoint.address)"
-# export BACKEND="$(ansible-inventory --playbook-dir "./main" --list  | yq .backend.hosts[0])"
-# export WEB="$(ansible-inventory --playbook-dir "./main" --list  | yq .web.hosts[0])"

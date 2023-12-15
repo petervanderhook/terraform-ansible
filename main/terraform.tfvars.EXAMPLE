@@ -1,0 +1,7 @@
+aws_region = "us-west-1"
+project_name = "ass-3-peter"
+home1_net = "174.6.81.63/32"
+home2_net = "0.0.0.0/0"
+bcit_net = "142.232.0.0/16"
+ami_id = "ami-0ee27453e13a1c244"
+ssh_key_name = "AWS-assignment1"

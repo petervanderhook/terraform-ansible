@@ -5,7 +5,7 @@ regions:
 
 # Set individual Variables
 compose:
-  ansible_host: public_dns_name
+  ansible_host: endpoint.address
 
 # Create groups
 keyed_groups:

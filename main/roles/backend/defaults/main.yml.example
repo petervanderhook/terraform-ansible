@@ -1,7 +1,0 @@
----
-repository: https://github.com/example_repository
-db_user: example_user
-db_pass: example_pass
-app_user: example_app_user
-app_pass: example_app_password
-app_host: example_rds_host_dns

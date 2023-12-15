@@ -1,1 +1,0 @@
-echo "$(ansible-inventory --graph)"

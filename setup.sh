@@ -35,10 +35,11 @@ WEB="$(ansible-inventory -i "./main" --list  | yq .web.hosts[0])"
 clear
 echo "RUNNING ANSIBLE PLAYBOOK"
 sleep 1
-ansible-playbook --playbook-dir "./main" -M "./main site.yml"
+ansible-playbook -i main/inventory/ main/site.yml
 echo "FINISHED RUNNING ANSIBLE PLAYBOOK"
 sleep 1
 
+clear
 echo Connect to your instance in the browser with the WEB address
 echo WEB: $WEB
 echo BACKEND: $BACKEND

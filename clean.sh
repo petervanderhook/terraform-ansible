@@ -1,6 +1,5 @@
-sleep 1
-echo "CLEANING UNECESSARY FILES"
 
+echo "CLEANING UNECESSARY FILES"
 rm -rf .terraform
 rm -rf .terraform.lock.hcl
 rm -rf main/.terraform

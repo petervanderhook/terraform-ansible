@@ -12,7 +12,7 @@ variable "vpc_id" {
 
 variable "home1_net" {
   description = "Home network"
-  default     = "174.6.81.63/32"
+  default     = "0.0.0.0/0"
 }
 variable "home2_net" {
   description = "Home network"

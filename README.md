@@ -1,7 +1,7 @@
 
 # Terraform Ansible Project
 
-This project initially sets up an RDS, backend ec2, and frontend ec2 instance using Terraform modules. Once completed, ansible playbooks will set up the applications on the frontend and backend instances, and configure the connections the the rds instance.
+This project, utilizing AWS, initially sets up an RDS, backend ec2, and frontend ec2 instance using Terraform modules. Once completed, ansible playbooks will set up the applications on the frontend and backend instances, and configure the connections the the rds instance.
 
 To automate setup, a bash script has been provided named setup.sh
 
